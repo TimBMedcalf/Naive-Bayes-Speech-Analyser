@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace AI_Naive_Bayes_Classifier
 {
     public class FileProcessor
     {
         private readonly char[] blackListChars = {' ', ',',':','.', ';','\t','\n', '\r'};
-
         public char[] BlackListChars { get => blackListChars; }
 
         private List<string> speech = new List<string>();
@@ -27,20 +27,25 @@ namespace AI_Naive_Bayes_Classifier
                             string[] contents = reader.ReadToEnd().Split(blackListChars);
                             foreach(var text in contents)
                             {
-                                for()
-                                Word[] words = new Word[](text, 1);
+                                speech.Add(text);
                             }
                             
                         }
+                    } 
+                    else 
+                    {
+                        Console.WriteLine("The "+ i + " filepath not found");
                     }
                 }
             }
         }
 
-        public void WordCounter (string text)
+        public void BlackListWords ()
         {
-            
+            foreach(var text in speech)
+            {
+                //Match match = Regex.Match(, text, RegexOptions.IgnoreCase);
+            }
         }
-
     }
 }
