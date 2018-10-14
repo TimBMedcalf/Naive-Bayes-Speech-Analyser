@@ -7,45 +7,63 @@ namespace AI_Naive_Bayes_Classifier
 {
     public class FileProcessor
     {
-        private readonly char[] blackListChars = {' ', ',',':','.', ';','\t','\n', '\r'};
+        private readonly char[] blackListChars = { ' ', ',', ':', '.', ';', '\t', '\n', '\r' };
         public char[] BlackListChars { get => blackListChars; }
+        public readonly List<List<string>> speeches = new List<List<string>>();
 
         private List<string> speech = new List<string>();
 
         public FileProcessor(string[] filePath)
         {
-            for (int i = 0; i < 5; i++) 
+            for (int i = 0; i < 5; i++)
             {
-                if (filePath[i] != null)
+                if (filePath[i] != null && File.Exists(filePath[i]))
                 {
-                    if(File.Exists(filePath[i]))
+                    //Get all text from file parsed
+                    using (StreamReader reader = new StreamReader(filePath[i]))
                     {
-                        //Get all text from file parsed
-                        using (StreamReader reader = new StreamReader(filePath[i]))
+                        // Read entire text file with ReadToEnd.
+                        string[] contents = reader.ReadToEnd().Split(blackListChars);
+                        foreach (var text in contents)
                         {
-                            // Read entire text file with ReadToEnd.
-                            string[] contents = reader.ReadToEnd().Split(blackListChars);
-                            foreach(var text in contents)
-                            {
-                                speech.Add(text);
-                            }
-                            
+                            speech.Add(text);
                         }
-                    } 
-                    else 
-                    {
-                        Console.WriteLine("The "+ i + " filepath not found");
                     }
                 }
+                else
+                {
+                    Console.WriteLine("The " + i + " filepath not found.");
+                }
+                speeches.Add(BlackListWordsMatch(speech, GetBlackListWords("stopwords.txt")));
             }
         }
 
-        public void BlackListWords ()
+        internal void CountWords(List<string> text)
         {
-            foreach(var text in speech)
+            throw new NotImplementedException();
+        }
+
+        public string[] GetBlackListWords(string blacklistfilepath)
+        {
+            if (File.Exists(blacklistfilepath))
             {
-                //Match match = Regex.Match(, text, RegexOptions.IgnoreCase);
+                using (StreamReader reader = new StreamReader(blacklistfilepath))
+                {
+                    string[] blackListWords = reader.ReadToEnd().Split(' ');
+                    return blackListWords;
+                }
             }
+            return null;
+        }
+
+        //Takes a list of speed and the blacklisted words compares and matches the two variables then returns sanatized text
+        public List<string> BlackListWordsMatch(List<string> speech, string[] blackListWords)
+        {
+            for (int i = 0; i < blackListWords.Length; i++)
+            {
+                speech.RemoveAll(words => words == blackListWords[i]);
+            }
+            return speech;
         }
     }
 }
