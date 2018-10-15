@@ -5,20 +5,16 @@ namespace AI_Naive_Bayes_Classifier
 {
     class Program
     {
-        private readonly List<FileProcessor> speeches = new List<FileProcessor>();
-
-        public List<FileProcessor> Speeches { get => speeches; }
-
         static void Main(string[] args)
         {
             var userInterface = new UserInterface();
-            var fileProcessor = new FileProcessor(userInterface.TextPaths());
+            var fileProcessor = new FileProcessor(userInterface.TrainingPaths());
 
+            //foreach(var words in fileProcessor.ConservativeSpeech[0])
+            //{
+            //    Console.WriteLine(words);
+            //}
 
-            foreach(var text in fileProcessor.speeches)
-            {
-                fileProcessor.CountWords(text);
-            }
         }
     }
 }

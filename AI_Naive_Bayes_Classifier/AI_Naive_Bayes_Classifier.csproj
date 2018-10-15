@@ -7,5 +7,6 @@
 
   <ItemGroup>
     <Compile Remove="Word.cs" />
+    <Compile Remove="Speech.cs" />
   </ItemGroup>
 </Project>
