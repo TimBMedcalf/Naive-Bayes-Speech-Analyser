@@ -8,5 +8,6 @@
   <ItemGroup>
     <Compile Remove="Word.cs" />
     <Compile Remove="Speech.cs" />
+    <Compile Remove="TrainingSet\Word.cs" />
   </ItemGroup>
 </Project>

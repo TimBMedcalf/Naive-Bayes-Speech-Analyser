@@ -10,15 +10,12 @@ namespace AI_Naive_Bayes_Classifier
     {
         private readonly char[] blackListChars = { ' ', ',', ':', '.', ';', '\t', '\n', '\r' };
         private readonly List<List<string>> speeches = new List<List<string>>();
-        private List<string> speech = new List<string>();
         private List<List<string>> labourSpeech = new List<List<string>>();
         private List<List<string>> conservativeSpeech = new List<List<string>>();
         private List<List<string>> coalitionSpeech = new List<List<string>>();
 
-        public char[] BlackListChars { get => blackListChars; }
+        char[] BlackListChars { get => blackListChars; }
         public List<List<string>> Speeches { get => speeches; }
-        public List<string> Speech { get => speech; set => speech = value; }
-
         public List<List<string>> LabourSpeech { get => labourSpeech; set => labourSpeech = value; }
         public List<List<string>> ConservativeSpeech { get => conservativeSpeech; set => conservativeSpeech = value; }
         public List<List<string>> CoalitionSpeech { get => coalitionSpeech; set => coalitionSpeech = value; }
@@ -27,6 +24,7 @@ namespace AI_Naive_Bayes_Classifier
         {
             for (int i = 0; i < 5; i++)
             {
+                List<string> speech = new List<string>();
                 if (filePath[i] != null && File.Exists(filePath[i]))
                 {
                     //Get all text from file parsed
@@ -34,9 +32,10 @@ namespace AI_Naive_Bayes_Classifier
                     {
                         // Read entire text file with ReadToEnd.
                         string[] contents = reader.ReadToEnd().Split(blackListChars);
+
                         foreach (var text in contents)
                         {
-                            Speech.Add(text);
+                            speech.Add(text);
                         }
                     }
                 }
@@ -44,12 +43,10 @@ namespace AI_Naive_Bayes_Classifier
                 {
                     Console.WriteLine("The " + i + " filepath not found.");
                 }
-                Speeches.Add(SanatizeText(Speech, GetBlackListWords("stopwords.txt")));
-                Speech.Clear();
+                Speeches.Add(SanatizeText(speech, GetBlackListWords("stopwords.txt")));
+
             }
 
-
-            CountUniqueWords(speeches);
         }
 
         public void ToUniqueWords(List<List<string>> Speeches)
@@ -85,17 +82,19 @@ namespace AI_Naive_Bayes_Classifier
             }
         }
 
-        public void CountUniqueWords(List<List<string>> speeches)
+        public Dictionary<string, int> CountUniqueWords(List<List<string>> speeches, int index)
         {
-            string[] uniqueWords = speeches[0].ToArray();
-
-            var uniqueList = uniqueWords.GroupBy(word => word)
-                                 .Select(g => new { Value = g.Key, Count = g.Count() });
-
+            Dictionary<string, int> uniqueWordSpeech = new Dictionary<string, int>();
+            var uniqueList = speeches[index].GroupBy(word => word)
+                                            .Select(g => new { Value = g.Key, Count = g.Count() });
+            
             foreach (var x in uniqueList)
             {
                 Console.WriteLine("Value: " + x.Value + " Count: " + x.Count);
+                uniqueWordSpeech.Add(x.Value, x.Count);
+
             }
+            return uniqueWordSpeech;
         }
 
         public string[] GetBlackListWords(string blacklistfilepath)
@@ -112,7 +111,7 @@ namespace AI_Naive_Bayes_Classifier
         }
 
         //Takes a list of speed and the blacklisted words compares and matches the two variables then returns sanatized text
-        public List<string> SanatizeText(List<string> speech, string[] blackListWords)
+        private List<string> SanatizeText(List<string> speech, string[] blackListWords)
         {
             for (int i = 0; i < blackListWords.Length; i++)
             {
