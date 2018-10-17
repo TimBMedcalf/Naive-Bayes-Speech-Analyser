@@ -10,15 +10,17 @@ namespace AI_Naive_Bayes_Classifier
     {
         private readonly char[] blackListChars = { ' ', ',', ':', '.', ';', '\t', '\n', '\r' };
         private readonly List<List<string>> speeches = new List<List<string>>();
-        private List<List<string>> labourSpeech = new List<List<string>>();
-        private List<List<string>> conservativeSpeech = new List<List<string>>();
-        private List<List<string>> coalitionSpeech = new List<List<string>>();
+
+        private List<List<string>> uniqueLabourSpeech = new List<List<string>>();
+        private List<List<string>> uniqueConservativeSpeech = new List<List<string>>();
+        private List<List<string>> uniqueCoalitionSpeech = new List<List<string>>();
 
         char[] BlackListChars { get => blackListChars; }
         public List<List<string>> Speeches { get => speeches; }
-        public List<List<string>> LabourSpeech { get => labourSpeech; set => labourSpeech = value; }
-        public List<List<string>> ConservativeSpeech { get => conservativeSpeech; set => conservativeSpeech = value; }
-        public List<List<string>> CoalitionSpeech { get => coalitionSpeech; set => coalitionSpeech = value; }
+
+        public List<List<string>> UniqueLabourSpeech { get => uniqueLabourSpeech; set => uniqueLabourSpeech = value; }
+        public List<List<string>> UniqueConservativeSpeech { get => uniqueConservativeSpeech; set => uniqueConservativeSpeech = value; }
+        public List<List<string>> UniqueCoalitionSpeech { get => uniqueCoalitionSpeech; set => uniqueCoalitionSpeech = value; }
 
         public FileProcessor(string[] filePath)
         {
@@ -44,9 +46,7 @@ namespace AI_Naive_Bayes_Classifier
                     Console.WriteLine("The " + i + " filepath not found.");
                 }
                 Speeches.Add(SanatizeText(speech, GetBlackListWords("stopwords.txt")));
-
             }
-
         }
 
         public void ToUniqueWords(List<List<string>> Speeches)
@@ -58,7 +58,8 @@ namespace AI_Naive_Bayes_Classifier
                     for (int j = 0; j < 2; j++)
                     {
                         List<string> parserList = speeches[i].Distinct().ToList();
-                        LabourSpeech.Add(parserList);
+                        UniqueLabourSpeech.Add(parserList);
+
                     }
                 }
 
@@ -67,7 +68,8 @@ namespace AI_Naive_Bayes_Classifier
                     for (int j = 0; j < 2; j++)
                     {
                         List<string> parserList = speeches[i].Distinct().ToList();
-                        ConservativeSpeech.Add(parserList);
+                        UniqueConservativeSpeech.Add(parserList);
+
                     }
                 }
 
@@ -76,22 +78,40 @@ namespace AI_Naive_Bayes_Classifier
                     for (int j = 0; j < 2; j++)
                     {
                         List<string> parserList = speeches[i].Distinct().ToList();
-                        CoalitionSpeech.Add(parserList);
+                        UniqueCoalitionSpeech.Add(parserList);
+
                    }
                 }
             }
         }
 
-        public Dictionary<string, int> CountUniqueWords(List<List<string>> speeches, int index)
+        public Dictionary<string, int> WordFrequencyList(List<List<string>> speeches, int index)
         {
             Dictionary<string, int> uniqueWordSpeech = new Dictionary<string, int>();
+
             var uniqueList = speeches[index].GroupBy(word => word)
                                             .Select(g => new { Value = g.Key, Count = g.Count() });
             
             foreach (var x in uniqueList)
             {
-                Console.WriteLine("Value: " + x.Value + " Count: " + x.Count);
                 uniqueWordSpeech.Add(x.Value, x.Count);
+
+            }
+            return uniqueWordSpeech;
+        }
+
+        public Dictionary<string, int> WordFrequencyListPlusOne(List<List<string>> speeches, int index)
+        {
+            Dictionary<string, int> uniqueWordSpeech = new Dictionary<string, int>();
+
+            var uniqueList = speeches[index].GroupBy(word => word)
+                                            .Select(g => new { Value = g.Key, Count = g.Count() });
+            
+            foreach (var x in uniqueList)
+            {
+                int j = x.Count;
+                j++;
+                uniqueWordSpeech.Add(x.Value, j);
 
             }
             return uniqueWordSpeech;

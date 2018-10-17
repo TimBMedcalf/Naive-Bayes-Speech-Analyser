@@ -6,13 +6,20 @@ namespace AI_Naive_Bayes_Classifier
     public class Naive_Bayes
     {
         FileProcessor fileProcessor;
-        private List<string[,,]> speechTable = new List<string[,,]>();
-        public List<string[,,]> SpeechTable { get => speechTable; set => speechTable = value; }
 
-        public List<string[,,]> MakeTable(List<List<string>> speeches, int index)
+        public void CalculateProbablity(List<List<string>> speeches, int index)
         {
-            SpeechTable[0][0,0,] = fileProcessor.CountUniqueWords(speeches, index);
+            for (int i = 0; i <= speeches[index].Count; i++)
+            {
+                Dictionary<string, int> frequencyTable = fileProcessor.WordFrequencyList(speeches, index);
+            }
+        }
 
+
+        public float SummateWords (List<List<string>> speeches)
+        {
+            float r = 0;
+            return r;
         }
     }
 }

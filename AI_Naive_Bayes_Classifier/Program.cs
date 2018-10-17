@@ -10,10 +10,8 @@ namespace AI_Naive_Bayes_Classifier
             var userInterface = new UserInterface();
             var fileProcessor = new FileProcessor(userInterface.TrainingPaths());
 
-            //foreach(var words in fileProcessor.ConservativeSpeech[0])
-            //{
-            //    Console.WriteLine(words);
-            //}
+            Dictionary<string, int> blah = fileProcessor.WordFrequencyList(fileProcessor.Speeches, 0);
+            Dictionary<string, int> blahblah = fileProcessor.WordFrequencyListPlusOne(fileProcessor.Speeches, 0);
 
         }
     }
