@@ -46,8 +46,8 @@ namespace AI_Naive_Bayes_Classifier
                     Console.WriteLine("The " + i + " filepath not found.");
                 }
                 Speeches.Add(SanatizeText(speech, GetBlackListWords("stopwords.txt")));
-                ToUniqueWords(speeches);
             }
+            ToUniqueWords(speeches);
         }
 
         public void ToUniqueWords(List<List<string>> Speeches)
@@ -96,23 +96,6 @@ namespace AI_Naive_Bayes_Classifier
             foreach (var x in uniqueList)
             {
                 uniqueWordSpeech.Add(x.Value, x.Count);
-
-            }
-            return uniqueWordSpeech;
-        }
-
-        public Dictionary<string, int> WordFrequencyListPlusOne(List<List<string>> speeches, int index)
-        {
-            Dictionary<string, int> uniqueWordSpeech = new Dictionary<string, int>();
-
-            var uniqueList = speeches[index].GroupBy(word => word)
-                                            .Select(g => new { Value = g.Key, Count = g.Count() });
-            
-            foreach (var x in uniqueList)
-            {
-                int j = x.Count;
-                j++;
-                uniqueWordSpeech.Add(x.Value, j);
 
             }
             return uniqueWordSpeech;
