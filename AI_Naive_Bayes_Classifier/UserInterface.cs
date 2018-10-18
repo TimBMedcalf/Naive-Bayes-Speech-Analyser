@@ -7,7 +7,7 @@ namespace AI_Naive_Bayes_Classifier
 
         public string[] Filepaths { get => filepaths; set => filepaths = value; }
 
-        public string[] TrainingPaths()
+        public string[] GetTrainingFiles()
         {
             //Introduce the program to user
             Console.WriteLine("Welcome to the Naive Bayes training user interface.");

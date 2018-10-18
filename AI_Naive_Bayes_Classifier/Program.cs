@@ -7,12 +7,22 @@ namespace AI_Naive_Bayes_Classifier
     {
         static void Main(string[] args)
         {
-            var userInterface = new UserInterface();
-            var fileProcessor = new FileProcessor(userInterface.TrainingPaths());
+            //Initialize the user interface
+            UserInterface userInterface = new UserInterface();
+            
+            //Pass the training files into the training function
+            Train(userInterface.GetTrainingFiles());
+        }
+
+        static void Train(string[] trainingFiles)
+        {
+            //Creates an object of fileprocessor that takes in the file paths
+            FileProcessor fileProcessor = new FileProcessor(trainingFiles);
+            Naive_Bayes naive_Bayes = new Naive_Bayes(); 
 
             Dictionary<string, int> blah = fileProcessor.WordFrequencyList(fileProcessor.Speeches, 0);
             Dictionary<string, int> blahblah = fileProcessor.WordFrequencyListPlusOne(fileProcessor.Speeches, 0);
-
+            
         }
     }
 }

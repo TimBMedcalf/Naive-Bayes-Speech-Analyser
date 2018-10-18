@@ -46,6 +46,7 @@ namespace AI_Naive_Bayes_Classifier
                     Console.WriteLine("The " + i + " filepath not found.");
                 }
                 Speeches.Add(SanatizeText(speech, GetBlackListWords("stopwords.txt")));
+                ToUniqueWords(speeches);
             }
         }
 
