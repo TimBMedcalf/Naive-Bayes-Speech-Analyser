@@ -41,11 +41,11 @@ namespace AI_Naive_Bayes_Classifier
         }
 
 
-        public List<Word> WordTable(float nCat, float nWords, Dictionary<string, int> mergedFrequencyTable)
+        public List<Word> WordTable(float nCat, float nWords, Dictionary<string, int> frequencyTable)
         {
             List<Word> table = new List<Word>();
 
-            foreach(KeyValuePair<string, int> entry in mergedFrequencyTable)
+            foreach(KeyValuePair<string, int> entry in frequencyTable)
             {
                 float probability = (float)entry.Value / (nCat + nWords);
                 table.Add(new Word(entry.Key, entry.Value + 1, probability));
@@ -53,10 +53,9 @@ namespace AI_Naive_Bayes_Classifier
             return table;
         }
 
-        public Dictionary<string, int> MergedFrequencyTable(Dictionary<string, int> tableOne, Dictionary<string, int> tableTwo)
+        public Dictionary<string, int> MergeFrequencyTable(Dictionary<string, int> tableOne, Dictionary<string, int> tableTwo)
         {
             Dictionary<string, int> mergeTable = new Dictionary<string, int>();
-
 
             foreach (KeyValuePair<string, int> entry in tableOne)
             {
@@ -81,5 +80,7 @@ namespace AI_Naive_Bayes_Classifier
             // if it contains the entry.key then add the key into the merge table while adding up the frequencies
             //if it does not contain then add the entry.value and entry.key into the table
         }
+
+
     }
 }

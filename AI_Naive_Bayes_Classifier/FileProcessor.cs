@@ -22,7 +22,7 @@ namespace AI_Naive_Bayes_Classifier
         public List<List<string>> UniqueConservativeSpeech { get => uniqueConservativeSpeech; set => uniqueConservativeSpeech = value; }
         public List<List<string>> UniqueCoalitionSpeech { get => uniqueCoalitionSpeech; set => uniqueCoalitionSpeech = value; }
 
-        public FileProcessor(string[] filePath)
+        public void ProcessSpeeches(string[] filePath)
         {
             for (int i = 0; i < 5; i++)
             {
@@ -32,7 +32,7 @@ namespace AI_Naive_Bayes_Classifier
                     //Get all text from file parsed
                     using (StreamReader reader = new StreamReader(filePath[i]))
                     {
-                        // Read entire text file with ReadToEnd.
+                        // Read entire text file with ReadToEnd and splits at the defined blacklisted characters
                         string[] contents = reader.ReadToEnd().Split(blackListChars);
 
                         foreach (var text in contents)
@@ -41,12 +41,13 @@ namespace AI_Naive_Bayes_Classifier
                         }
                     }
                 }
-                else
+                else 
                 {
                     Console.WriteLine("The " + i + " filepath not found.");
                 }
                 Speeches.Add(SanatizeText(speech, GetBlackListWords("stopwords.txt")));
             }
+            //Makes a unique word list of each category for classification
             ToUniqueWords(speeches);
         }
 
