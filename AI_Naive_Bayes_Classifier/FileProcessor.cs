@@ -11,6 +11,9 @@ namespace AI_Naive_Bayes_Classifier
         readonly char[] blackListChars = { ' ', ',', ':', '.', ';', '\t', '\n', '\r' };
         readonly List<List<string>> speeches = new List<List<string>>();
         List<List<string>> trainingSpeech = new List<List<string>>();
+        List<List<string>> labourSpeeches = new List<List<string>>();
+        List<List<string>> conservativeSpeeches = new List<List<string>>();
+        List<List<string>> coalitionSpeeches = new List<List<string>>();
         List<List<string>> uniqueLabourSpeech = new List<List<string>>();
         List<List<string>> uniqueConservativeSpeech = new List<List<string>>();
         List<List<string>> uniqueCoalitionSpeech = new List<List<string>>();
@@ -27,6 +30,9 @@ namespace AI_Naive_Bayes_Classifier
         public List<Dictionary<string, int>> LabourTables { get => labourTables; set => labourTables = value; }
         public List<Dictionary<string, int>> ConservativeTables { get => conservativeTables; set => conservativeTables = value; }
         public List<Dictionary<string, int>> CoalitionTables { get => coalitionTables; set => coalitionTables = value; }
+        public List<List<string>> LabourSpeeches { get => labourSpeeches; set => labourSpeeches = value; }
+        public List<List<string>> ConservativeSpeeches { get => conservativeSpeeches; set => conservativeSpeeches = value; }
+        public List<List<string>> CoalitionSpeeches { get => coalitionSpeeches; set => coalitionSpeeches = value; }
 
         public void ProcessSpeeches(List<List<string>> filepaths)
         {
@@ -44,7 +50,7 @@ namespace AI_Naive_Bayes_Classifier
 
                             foreach(var text in contents)
                             {
-                                parseSpeech.Add(text);
+                                parseSpeech.Add(text.ToLower());
                             }
                         }
                     }
@@ -68,6 +74,9 @@ namespace AI_Naive_Bayes_Classifier
             {
                 if (i < UserInterface.NUMOFLABOURFILES)
                 {
+                    //Adds a total word list to labour speeches to calculate the summation of all of the words in a category
+                    labourSpeeches.Add(speeches[i]);
+
                     //creates a parser list and then passes the list to the unique labour speech file
                     List<List<string>> uniqueSpeech = new List<List<string>>();
                     List<string> parserList = speech[i].Distinct().ToList();
@@ -88,7 +97,9 @@ namespace AI_Naive_Bayes_Classifier
 
                 if(i >= UserInterface.NUMOFLABOURFILES && i < UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES)
                 {
-                   
+
+                    conservativeSpeeches.Add(speeches[i]);
+
                     List<List<string>> uniqueSpeech = new List<List<string>>();
                     List<string> parserList = speech[i].Distinct().ToList();
                     UniqueConservativeSpeech.Add(parserList);
@@ -109,6 +120,7 @@ namespace AI_Naive_Bayes_Classifier
                 if(i >= UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES &&
                    i < UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES + UserInterface.NUMOFCOALITIONFILES)
                 {
+                    coalitionSpeeches.Add(speeches[i]);
                     List<List<string>> uniqueSpeech = new List<List<string>>();
                     List<string> parserList = speech[i].Distinct().ToList();
                     UniqueCoalitionSpeech.Add(parserList);

@@ -31,7 +31,7 @@ namespace AI_Naive_Bayes_Classifier
         public void Classify()
         {
 
-            foreach(var speech in fileProcessor.ClassifySpeech)
+            foreach (var speech in fileProcessor.ClassifySpeech)
             {
                 labourProbability = naive_Bayes.Classify(naive_Bayes.TrainedLabour,
                                                            speech,
@@ -39,52 +39,47 @@ namespace AI_Naive_Bayes_Classifier
                                                            fileProcessor.UniqueConservativeSpeech.Count,
                                                            fileProcessor.UniqueCoalitionSpeech.Count,
                                                            "labour");
-            }
+                Console.WriteLine("Labour probility: " + labourProbability);
 
 
-            foreach(var speech in fileProcessor.ClassifySpeech)
-            {
                 conservativeProbability = naive_Bayes.Classify(naive_Bayes.TrainedConservative,
                                                            speech,
                                                            fileProcessor.UniqueLabourSpeech.Count,
                                                            fileProcessor.UniqueConservativeSpeech.Count,
                                                            fileProcessor.UniqueCoalitionSpeech.Count,
                                                            "conservative");
-            }
+                Console.WriteLine("Conservative probility: " + conservativeProbability);
 
-            foreach(var speech in fileProcessor.ClassifySpeech)
-            {
+
                 coalitionProbability = naive_Bayes.Classify(naive_Bayes.TrainedCoalition,
                                                           speech,
                                                           fileProcessor.UniqueLabourSpeech.Count,
                                                           fileProcessor.UniqueConservativeSpeech.Count,
                                                           fileProcessor.UniqueCoalitionSpeech.Count,
                                                           "coalition");
-            }
+                Console.WriteLine("Coalition probility: " + coalitionProbability);
 
-            Console.WriteLine("Coalition probility: " + coalitionProbability);
-            Console.WriteLine("Conservative probility: " + conservativeProbability);
-            Console.WriteLine("Labour probility: " + labourProbability);
+                if (coalitionProbability > labourProbability && coalitionProbability > conservativeProbability)
+                {
+                    Console.WriteLine("This speech is most likely reffering to a coalition government");
+                }
 
-            if (coalitionProbability > labourProbability && coalitionProbability > conservativeProbability)
-            {
-                Console.WriteLine("This speech is most likely reffering to a coalition government");
-            }
+                if (labourProbability > coalitionProbability && labourProbability > conservativeProbability)
+                {
+                    Console.WriteLine("This speech is most likely reffering to a labour government");
+                }
 
-            if (labourProbability > coalitionProbability && labourProbability > conservativeProbability)
-            {
-                Console.WriteLine("This speech is most likely reffering to a labour government");
-            }
+                if (conservativeProbability > coalitionProbability && conservativeProbability > labourProbability)
+                {
+                    Console.WriteLine("This speech is most likely reffering to a conservative government");
+                }
 
-            if(conservativeProbability > coalitionProbability && conservativeProbability > labourProbability)
-            {
-                Console.WriteLine("This speech is most likely reffering to a conservative government");
             }
         }
 
         List<Word> TrainLabour()
         {
-            float nWords = naive_Bayes.SummateWords(fileProcessor.UniqueLabourSpeech);
+            float nWords = naive_Bayes.SummateWords(fileProcessor.LabourSpeeches);
 
             float nCat = naive_Bayes.SummateUniqueWords(fileProcessor.UniqueLabourSpeech,
                                                         fileProcessor.UniqueConservativeSpeech,
@@ -99,7 +94,7 @@ namespace AI_Naive_Bayes_Classifier
 
         List<Word> TrainConservative()
         {
-            float nWords = naive_Bayes.SummateWords(fileProcessor.UniqueConservativeSpeech);
+            float nWords = naive_Bayes.SummateWords(fileProcessor.ConservativeSpeeches);
 
             float nCat = naive_Bayes.SummateUniqueWords(fileProcessor.UniqueLabourSpeech,
                                                         fileProcessor.UniqueConservativeSpeech,
@@ -114,7 +109,7 @@ namespace AI_Naive_Bayes_Classifier
 
         List<Word> TrainCoalition()
         {
-            float nWords = naive_Bayes.SummateWords(fileProcessor.UniqueCoalitionSpeech);
+            float nWords = naive_Bayes.SummateWords(fileProcessor.CoalitionSpeeches);
 
             float nCat = naive_Bayes.SummateUniqueWords(fileProcessor.UniqueLabourSpeech,
                                                         fileProcessor.UniqueConservativeSpeech,
