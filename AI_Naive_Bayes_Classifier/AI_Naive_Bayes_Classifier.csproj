@@ -9,4 +9,10 @@
     <Compile Remove="Speech.cs" />
     <Compile Remove="TrainingSet\Word.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="stopwords.txt" />
+    <None Remove="test1.txt" />
+    <None Remove="test2.txt" />
+    <None Remove="test3.txt" />
+  </ItemGroup>
 </Project>

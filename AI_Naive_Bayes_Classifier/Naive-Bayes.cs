@@ -5,6 +5,14 @@ namespace AI_Naive_Bayes_Classifier
 {
     public class Naive_Bayes
     {
+        List<Word> trainedLabour = new List<Word>();
+        List<Word> trainedConservative = new List<Word>();
+        List<Word> trainedCoalition = new List<Word>();
+
+        public List<Word> TrainedLabour { get => trainedLabour; set => trainedLabour = value; }
+        public List<Word> TrainedConservative { get => trainedConservative; set => trainedConservative = value; }
+        public List<Word> TrainedCoalition { get => trainedCoalition; set => trainedCoalition = value; }
+
         //Gets the amount of all unique words in all of the files
         public float SummateUniqueWords (List<List<string>> labourSpeech, List<List<string>> conservativeSpeech, List<List<string>> coalitionSpeech)
         {
@@ -81,6 +89,60 @@ namespace AI_Naive_Bayes_Classifier
             //if it does not contain then add the entry.value and entry.key into the table
         }
 
+
+
+        //Compare all of the words in the new file with all of the words in catagory a then take the Probability of that word then summate all of the
+        //probabilities together then times it by the total amount of the catagory over the amount of files given.
+        //Highest value is the catagory it is associeted with.
+
+        public float Classify(List<Word> categorySet, List<string> classifySet, int numOfLabour, int numOfConservative, int numOfCoalition, string category)
+        {
+            float summatedProbability = 0;
+            int totalSpeeches = numOfLabour + numOfCoalition + numOfConservative;
+            float categoryProbability = 0;
+
+            switch (category)
+            {
+                case("labour"):
+
+                    foreach (var word in categorySet)
+                    {
+                        if (classifySet.Contains(word.Value))
+                        {
+                            summatedProbability += word.Probability;
+                        }
+                    }
+                    categoryProbability = numOfLabour / (float)totalSpeeches;
+                    return categoryProbability * summatedProbability;
+
+                case("conservative"):
+
+                    foreach (var word in categorySet)
+                    {
+                        if (classifySet.Contains(word.Value))
+                        {
+                            summatedProbability += word.Probability;
+                        }
+                    }
+                    categoryProbability = numOfConservative / (float)totalSpeeches;
+                    return categoryProbability * summatedProbability;
+
+                case("coalition"):
+
+                    foreach (var word in categorySet)
+                    {
+                        if (classifySet.Contains(word.Value))
+                        {
+                            summatedProbability += word.Probability;
+                        }
+                    }
+                    categoryProbability = numOfCoalition / (float)totalSpeeches;
+                    return categoryProbability * summatedProbability;
+
+                 default:
+                    return categoryProbability * summatedProbability;
+                }
+            }
 
     }
 }

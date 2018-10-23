@@ -9,23 +9,76 @@ namespace AI_Naive_Bayes_Classifier
         readonly FileProcessor fileProcessor = new FileProcessor();
         readonly Naive_Bayes naive_Bayes = new Naive_Bayes();
 
+        float labourProbability;
+        float conservativeProbability;
+        float coalitionProbability;
 
         public void Startup()
         {
             fileProcessor.ProcessSpeeches(userInterface.GetTrainingFiles());
+            Train();
         }
         //Pass the training files into the training function
 
         public void Train()
         {
+            naive_Bayes.TrainedLabour = TrainLabour();
+            naive_Bayes.TrainedConservative = TrainConservative();
+            naive_Bayes.TrainedCoalition = TrainCoalition();
+            Classify();
+        }
 
-            List<Word> trainedLabour = TrainLabour();
-            List<Word> trainedConservative = TrainConservative();
-            List<Word> trainCoalition = TrainCoalition();
+        public void Classify()
+        {
 
-            foreach (var word in trainedLabour)
+            foreach(var speech in fileProcessor.ClassifySpeech)
             {
-                Console.Write(word.Value + ": " + word.Frequency + " " + word.Probability + "\n");
+                labourProbability = naive_Bayes.Classify(naive_Bayes.TrainedLabour,
+                                                           speech,
+                                                           fileProcessor.UniqueLabourSpeech.Count,
+                                                           fileProcessor.UniqueConservativeSpeech.Count,
+                                                           fileProcessor.UniqueCoalitionSpeech.Count,
+                                                           "labour");
+            }
+
+
+            foreach(var speech in fileProcessor.ClassifySpeech)
+            {
+                conservativeProbability = naive_Bayes.Classify(naive_Bayes.TrainedConservative,
+                                                           speech,
+                                                           fileProcessor.UniqueLabourSpeech.Count,
+                                                           fileProcessor.UniqueConservativeSpeech.Count,
+                                                           fileProcessor.UniqueCoalitionSpeech.Count,
+                                                           "conservative");
+            }
+
+            foreach(var speech in fileProcessor.ClassifySpeech)
+            {
+                coalitionProbability = naive_Bayes.Classify(naive_Bayes.TrainedCoalition,
+                                                          speech,
+                                                          fileProcessor.UniqueLabourSpeech.Count,
+                                                          fileProcessor.UniqueConservativeSpeech.Count,
+                                                          fileProcessor.UniqueCoalitionSpeech.Count,
+                                                          "coalition");
+            }
+
+            Console.WriteLine("Coalition probility: " + coalitionProbability);
+            Console.WriteLine("Conservative probility: " + conservativeProbability);
+            Console.WriteLine("Labour probility: " + labourProbability);
+
+            if (coalitionProbability > labourProbability && coalitionProbability > conservativeProbability)
+            {
+                Console.WriteLine("This speech is most likely reffering to a coalition government");
+            }
+
+            if (labourProbability > coalitionProbability && labourProbability > conservativeProbability)
+            {
+                Console.WriteLine("This speech is most likely reffering to a labour government");
+            }
+
+            if(conservativeProbability > coalitionProbability && conservativeProbability > labourProbability)
+            {
+                Console.WriteLine("This speech is most likely reffering to a conservative government");
             }
         }
 
@@ -37,10 +90,7 @@ namespace AI_Naive_Bayes_Classifier
                                                         fileProcessor.UniqueConservativeSpeech,
                                                         fileProcessor.UniqueCoalitionSpeech);
 
-            Dictionary<string, int> tableOne = fileProcessor.WordFrequencyList(fileProcessor.Speeches, 0);
-            Dictionary<string, int> tableTwo = fileProcessor.WordFrequencyList(fileProcessor.Speeches, 1);
-
-            Dictionary<string, int> mergeTable = naive_Bayes.MergeFrequencyTable(tableOne, tableTwo);
+            Dictionary<string, int> mergeTable = fileProcessor.MergeFrequencyTables(fileProcessor.LabourTables);
 
             List<Word> wordTable = naive_Bayes.WordTable(nCat, nWords, mergeTable);
 
@@ -55,10 +105,7 @@ namespace AI_Naive_Bayes_Classifier
                                                         fileProcessor.UniqueConservativeSpeech,
                                                         fileProcessor.UniqueCoalitionSpeech);
 
-            Dictionary<string, int> tableOne = fileProcessor.WordFrequencyList(fileProcessor.Speeches, 2);
-            Dictionary<string, int> tableTwo = fileProcessor.WordFrequencyList(fileProcessor.Speeches, 3);
-
-            Dictionary<string, int> mergeTable = naive_Bayes.MergeFrequencyTable(tableOne, tableTwo);
+            Dictionary<string, int> mergeTable = fileProcessor.MergeFrequencyTables(fileProcessor.ConservativeTables);
 
             List<Word> wordTable = naive_Bayes.WordTable(nCat, nWords, mergeTable);
 
@@ -73,9 +120,9 @@ namespace AI_Naive_Bayes_Classifier
                                                         fileProcessor.UniqueConservativeSpeech,
                                                         fileProcessor.UniqueCoalitionSpeech);
 
-            Dictionary<string, int> tableOne = fileProcessor.WordFrequencyList(fileProcessor.Speeches, 4);
+            Dictionary<string, int> mergeTable = fileProcessor.MergeFrequencyTables(fileProcessor.CoalitionTables);
 
-            List<Word> wordTable = naive_Bayes.WordTable(nCat, nWords, tableOne);
+            List<Word> wordTable = naive_Bayes.WordTable(nCat, nWords, mergeTable);
 
             return wordTable;
         }
