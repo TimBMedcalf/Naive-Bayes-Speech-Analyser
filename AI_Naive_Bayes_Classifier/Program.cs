@@ -11,6 +11,7 @@ namespace AI_Naive_Bayes_Classifier
             Utilities utilities = new Utilities();
 
             utilities.Startup();
+            Console.ReadKey();
         }
     }
 }

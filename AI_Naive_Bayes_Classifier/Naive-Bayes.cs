@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AI_Naive_Bayes_Classifier
 {
@@ -16,23 +17,35 @@ namespace AI_Naive_Bayes_Classifier
         //Gets the amount of all unique words in all of the files
         public float SummateUniqueWords (List<List<string>> labourSpeech, List<List<string>> conservativeSpeech, List<List<string>> coalitionSpeech)
         {
+            List<List<string>> metaUniqueList = new List<List<string>>();
+            List<string> speechesList = new List<string>();
             float summation = 0;
 
             foreach (var speech in labourSpeech)
             {
-                summation += speech.Count; 
+                metaUniqueList.Add(speech);
             }
 
             foreach (var speech in conservativeSpeech)
             {
-                summation += speech.Count;
+                metaUniqueList.Add(speech);
             }
 
             foreach (var speech in coalitionSpeech)
             {
-                summation += speech.Count;
+                metaUniqueList.Add(speech);
             }
 
+            foreach(var speech in metaUniqueList)
+            {
+                foreach(var text in speech)
+                {
+                    speechesList.Add(text);
+                }
+            }
+
+            List<string> distinct = speechesList.Distinct().ToList();
+            summation += distinct.Count();
             return summation;
         }
 
@@ -60,14 +73,6 @@ namespace AI_Naive_Bayes_Classifier
             }
             return table;
         }
-
-    
-            // Put all of table one in merge table then compare merge table with containskey with table two
-            // if it contains the entry.key then add the key into the merge table while adding up the frequencies
-            //if it does not contain then add the entry.value and entry.key into the table
-
-
-
 
         //Compare all of the words in the new file with all of the words in catagory a then take the Probability of that word then summate all of the
         //probabilities together then times it by the total amount of the catagory over the amount of files given.

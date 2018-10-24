@@ -2,13 +2,12 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq; 
-using System.Text.RegularExpressions;
 
 namespace AI_Naive_Bayes_Classifier
 {
     public class FileProcessor
     {
-        readonly char[] blackListChars = { ' ', ',', ':', '.', ';', '\t', '\n', '\r' };
+        readonly char[] blackListChars = { ' ', ',', ':', '.', ';', '\t', '\n', '\r', '\'','\\' };
         readonly List<List<string>> speeches = new List<List<string>>();
         List<List<string>> trainingSpeech = new List<List<string>>();
         List<List<string>> labourSpeeches = new List<List<string>>();
@@ -168,6 +167,10 @@ namespace AI_Naive_Bayes_Classifier
             return speech;
         }
 
+
+        // Put all of table one in merge table then compare merge table with containskey with table two
+        // if it contains the entry.key then add the key into the merge table while adding up the frequencies
+        //if it does not contain then add the entry.value and entry.key into the table
         public Dictionary<string, int> MergeFrequencyTables(List<Dictionary<string, int>> tableList)
         {
             Dictionary<string, int> mergeTable = new Dictionary<string, int>();
