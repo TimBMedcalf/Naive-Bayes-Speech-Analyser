@@ -9,9 +9,9 @@ namespace AI_Naive_Bayes_Classifier
         readonly FileProcessor fileProcessor = new FileProcessor();
         readonly Naive_Bayes naive_Bayes = new Naive_Bayes();
 
-        float labourProbability;
-        float conservativeProbability;
-        float coalitionProbability;
+        double labourProbability;
+        double conservativeProbability;
+        double coalitionProbability;
 
         public void Startup()
         {
@@ -59,17 +59,17 @@ namespace AI_Naive_Bayes_Classifier
                                                           "coalition");
                 Console.WriteLine("Coalition probility: " + coalitionProbability);
 
-                if (coalitionProbability > labourProbability && coalitionProbability > conservativeProbability)
+                if (coalitionProbability < labourProbability && coalitionProbability < conservativeProbability)
                 {
                     Console.WriteLine("This speech is most likely reffering to a coalition government");
                 }
 
-                if (labourProbability > coalitionProbability && labourProbability > conservativeProbability)
+                if (labourProbability < coalitionProbability && labourProbability < conservativeProbability)
                 {
                     Console.WriteLine("This speech is most likely reffering to a labour government");
                 }
 
-                if (conservativeProbability > coalitionProbability && conservativeProbability > labourProbability)
+                if (conservativeProbability < coalitionProbability && conservativeProbability < labourProbability)
                 {
                     Console.WriteLine("This speech is most likely reffering to a conservative government");
                 }

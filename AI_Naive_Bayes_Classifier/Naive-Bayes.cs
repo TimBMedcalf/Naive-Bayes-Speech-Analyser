@@ -78,11 +78,11 @@ namespace AI_Naive_Bayes_Classifier
         //probabilities together then times it by the total amount of the catagory over the amount of files given.
         //Highest value is the catagory it is associeted with.
 
-        public float Classify(List<Word> categorySet, List<string> trainingSet, int numOfLabour, int numOfConservative, int numOfCoalition, string category)
+        public double Classify(List<Word> categorySet, List<string> trainingSet, int numOfLabour, int numOfConservative, int numOfCoalition, string category)
         {
-            float summatedProbability = 0;
             int totalSpeeches = numOfLabour + numOfCoalition + numOfConservative;
-            float categoryProbability = 0;
+            double categoryProbability = 0;
+            double summatedProbability = 0;
 
             switch (category)
             {
@@ -92,11 +92,12 @@ namespace AI_Naive_Bayes_Classifier
                     {
                         if (trainingSet.Contains(word.Value))
                         {
-                            summatedProbability += word.Probability;
+                            summatedProbability += Math.Log(word.Probability);
                         }
                     }
+
                     categoryProbability = numOfLabour / (float)totalSpeeches;
-                    return categoryProbability * summatedProbability;
+                    return Math.Log(categoryProbability) + summatedProbability;
 
                 case("conservative"):
 
@@ -104,27 +105,26 @@ namespace AI_Naive_Bayes_Classifier
                     {
                         if (trainingSet.Contains(word.Value))
                         {
-                            summatedProbability += word.Probability;
+                            summatedProbability += Math.Log(word.Probability);
                         }
                     }
                     categoryProbability = numOfConservative / (float)totalSpeeches;
-                    return categoryProbability * summatedProbability;
+                    return Math.Log(categoryProbability) + summatedProbability;
 
-                case("coalition"):
+                case ("coalition"):
 
                     foreach (var word in categorySet)
                     {
                         if (trainingSet.Contains(word.Value))
                         {
-                            summatedProbability += word.Probability;
+                            summatedProbability += Math.Log(word.Probability);
                         }
                     }
                     categoryProbability = numOfCoalition / (float)totalSpeeches;
-                    return categoryProbability * summatedProbability;
-
-                 default:
-                    return categoryProbability * summatedProbability;
-                }
+                    return Math.Log(categoryProbability) + summatedProbability;
+                default:
+                    return Math.Log(categoryProbability) + summatedProbability;
             }
+        }
     }
 }
