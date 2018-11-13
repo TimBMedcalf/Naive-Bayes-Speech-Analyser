@@ -33,6 +33,11 @@ namespace AI_Naive_Bayes_Classifier
         public List<List<string>> ConservativeSpeeches { get => conservativeSpeeches; set => conservativeSpeeches = value; }
         public List<List<string>> CoalitionSpeeches { get => coalitionSpeeches; set => coalitionSpeeches = value; }
 
+        /// <summary>
+        /// Processes the speeches. Takes in a list of filepaths specified from the user
+        /// </summary>
+        /// <param name="filepaths">Filepaths.</param>
+
         public void ProcessSpeeches(List<List<string>> filepaths)
         {
             foreach(var category in filepaths)
@@ -63,8 +68,13 @@ namespace AI_Naive_Bayes_Classifier
             ProcessForBayes(speeches);
         }
 
+        /// <summary>
+        ///  Processes the files ready to be used from the niave-bayes formula.
+        /// </summary>
+        /// <param name="speech">Speech.</param>
         void ProcessForBayes(List<List<string>> speech )
         {
+            //Creates ints to be used for holding the initial index for the labour tables dictionairy
             int j = 0;
             int z = 0;
             int y = 0;
@@ -94,6 +104,8 @@ namespace AI_Naive_Bayes_Classifier
                     j++;
                 }
 
+                //Checks if the for loop is at the correct index before processing the file
+
                 if(i >= UserInterface.NUMOFLABOURFILES && i < UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES)
                 {
 
@@ -116,7 +128,8 @@ namespace AI_Naive_Bayes_Classifier
                     z++;
                 }
 
-                if(i >= UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES &&
+                //Checks if the for loop is at the correct index before processing the file
+                if (i >= UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES &&
                    i < UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES + UserInterface.NUMOFCOALITIONFILES)
                 {
                     coalitionSpeeches.Add(speeches[i]);
@@ -144,6 +157,7 @@ namespace AI_Naive_Bayes_Classifier
             }
         }
 
+        //this returns a list of string of the stop words for comparison against the speeches
         string[] GetBlackListWords(string blacklistfilepath)
         {
             if (File.Exists(blacklistfilepath))

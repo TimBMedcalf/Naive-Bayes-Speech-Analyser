@@ -22,6 +22,7 @@ namespace AI_Naive_Bayes_Classifier
 
         public void Train()
         {
+            //Sets the training speeches to be trained
             naive_Bayes.TrainedLabour = TrainLabour();
             naive_Bayes.TrainedConservative = TrainConservative();
             naive_Bayes.TrainedCoalition = TrainCoalition();
@@ -30,7 +31,7 @@ namespace AI_Naive_Bayes_Classifier
 
         public void Classify()
         {
-
+            //Loops through each speech that needs to be classified then passes the data through a classifier to give classification
             foreach (var speech in fileProcessor.ClassifySpeech)
             {
                 labourProbability = naive_Bayes.Classify(naive_Bayes.TrainedLabour,
@@ -59,6 +60,7 @@ namespace AI_Naive_Bayes_Classifier
                                                           "coalition");
                 Console.WriteLine("Coalition probility: " + coalitionProbability);
 
+                //Determines which party was in power by checking the probability against each other.
                 if (coalitionProbability < labourProbability && coalitionProbability < conservativeProbability)
                 {
                     Console.WriteLine("This speech is most likely reffering to a coalition government");
@@ -77,6 +79,10 @@ namespace AI_Naive_Bayes_Classifier
             }
         }
 
+        /// <summary>
+        /// Returns a dictionairy of the labour speech ready to be used to classify against
+        /// </summary>
+        /// <returns>Dictionairy of a speech</returns>
         List<Word> TrainLabour()
         {
             float nWords = naive_Bayes.SummateWords(fileProcessor.LabourSpeeches);
@@ -92,6 +98,10 @@ namespace AI_Naive_Bayes_Classifier
             return wordTable;
         }
 
+        /// <summary>
+        /// Returns a dictionairy of the labour speech ready to be used to classify against
+        /// </summary>
+        /// <returns>Dictionairy of a speech</returns>
         List<Word> TrainConservative()
         {
             float nWords = naive_Bayes.SummateWords(fileProcessor.ConservativeSpeeches);
@@ -107,6 +117,10 @@ namespace AI_Naive_Bayes_Classifier
             return wordTable;
         }
 
+        /// <summary>
+        /// Returns a dictionairy of the labour speech ready to be used to classify against
+        /// </summary>
+        /// <returns>Dictionairy of a speech</returns>
         List<Word> TrainCoalition()
         {
             float nWords = naive_Bayes.SummateWords(fileProcessor.CoalitionSpeeches);

@@ -30,7 +30,7 @@ namespace AI_Naive_Bayes_Classifier
             Console.WriteLine("Welcome to the Naive Bayes training user interface.");
             Console.WriteLine("Please specify the files below in which you would like to train the AI with.");
 
-
+            //Asks the user for how many of each files they want to train on then sets that number to a global variable
             Console.WriteLine("How many Labour files would you like to train on?");
 
             NUMOFLABOURFILES = Convert.ToInt32(Console.ReadLine());
@@ -47,6 +47,7 @@ namespace AI_Naive_Bayes_Classifier
 
             NUMOFTRAININGFILES = Convert.ToInt32(Console.ReadLine());
 
+            // Sets each filepath to the corresponding index of an array which holds the file paths.
             for (int i = 0; i < NUMOFLABOURFILES; i++)
             {
                 Console.WriteLine("Enter Labour filepath {0}:", i);
@@ -67,7 +68,7 @@ namespace AI_Naive_Bayes_Classifier
 
             for (int i = 0; i < NUMOFTRAININGFILES; i++)
             {
-                Console.WriteLine("Enter a training filepath {0}:",i);
+                Console.WriteLine("Enter a file which you want to be classified {0}:",i);
                 FilePathList[3].Add(Console.ReadLine());
             }
 
