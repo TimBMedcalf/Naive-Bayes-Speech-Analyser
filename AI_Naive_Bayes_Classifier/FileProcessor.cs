@@ -1,13 +1,24 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq; 
+using System.Linq;
 
 namespace AI_Naive_Bayes_Classifier
 {
     public class FileProcessor
     {
-        readonly char[] blackListChars = { ' ', ',', ':', '.', ';', '\t', '\n', '\r', '\'','\\' };
+        readonly char[] blackListChars = {
+   ' ',
+   ',',
+   ':',
+   '.',
+   ';',
+   '\t',
+   '\n',
+   '\r',
+   '\'',
+   '\\'
+  };
         readonly List<List<string>> speeches = new List<List<string>>();
         List<List<string>> trainingSpeech = new List<List<string>>();
         List<List<string>> labourSpeeches = new List<List<string>>();
@@ -37,12 +48,11 @@ namespace AI_Naive_Bayes_Classifier
         /// Processes the speeches. Takes in a list of filepaths specified from the user
         /// </summary>
         /// <param name="filepaths">Filepaths.</param>
-
         public void ProcessSpeeches(List<List<string>> filepaths)
         {
-            foreach(var category in filepaths)
+            foreach (var category in filepaths)
             {
-                foreach(var filepath in category)
+                foreach (var filepath in category)
                 {
                     List<string> parseSpeech = new List<string>();
 
@@ -52,7 +62,7 @@ namespace AI_Naive_Bayes_Classifier
                         {
                             string[] contents = reader.ReadToEnd().Split(blackListChars);
 
-                            foreach(var text in contents)
+                            foreach (var text in contents)
                             {
                                 parseSpeech.Add(text.ToLower());
                             }
@@ -72,7 +82,7 @@ namespace AI_Naive_Bayes_Classifier
         ///  Processes the files ready to be used from the niave-bayes formula.
         /// </summary>
         /// <param name="speech">Speech.</param>
-        void ProcessForBayes(List<List<string>> speech )
+        void ProcessForBayes(List<List<string>> speech)
         {
             //Creates ints to be used for holding the initial index for the labour tables dictionairy
             int j = 0;
@@ -93,7 +103,10 @@ namespace AI_Naive_Bayes_Classifier
 
                     //Create a table with the frequency of the words as the value of the dicitionairy
                     var uniqueList = speeches[i].GroupBy(word => word)
-                                                .Select(g => new { Value = g.Key, Count = g.Count() });
+                     .Select(g => new {
+                         Value = g.Key,
+                         Count = g.Count()
+                     });
 
                     //adds a table to the tables so when referencing the labourtables[i] it does not call a index out of bounds error
                     labourTables.Add(new Dictionary<string, int>());
@@ -106,18 +119,19 @@ namespace AI_Naive_Bayes_Classifier
 
                 //Checks if the for loop is at the correct index before processing the file
 
-                if(i >= UserInterface.NUMOFLABOURFILES && i < UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES)
+                if (i >= UserInterface.NUMOFLABOURFILES && i < UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES)
                 {
-
                     conservativeSpeeches.Add(speeches[i]);
-
                     List<List<string>> uniqueSpeech = new List<List<string>>();
                     List<string> parserList = speech[i].Distinct().ToList();
                     UniqueConservativeSpeech.Add(parserList);
 
                     //Create a table with the frequency of the words as the value of the dicitionairy
                     var uniqueList = speeches[i].GroupBy(word => word)
-                                                    .Select(g => new { Value = g.Key, Count = g.Count() });
+                     .Select(g => new {
+                         Value = g.Key,
+                         Count = g.Count()
+                     });
 
                     conservativeTables.Add(new Dictionary<string, int>());
 
@@ -130,7 +144,7 @@ namespace AI_Naive_Bayes_Classifier
 
                 //Checks if the for loop is at the correct index before processing the file
                 if (i >= UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES &&
-                   i < UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES + UserInterface.NUMOFCOALITIONFILES)
+                 i < UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCONSERVATIVEFILES + UserInterface.NUMOFCOALITIONFILES)
                 {
                     coalitionSpeeches.Add(speeches[i]);
                     List<List<string>> uniqueSpeech = new List<List<string>>();
@@ -139,7 +153,10 @@ namespace AI_Naive_Bayes_Classifier
 
                     //Create a table with the frequency of the words as the value of the dicitionairy
                     var uniqueList = speeches[i].GroupBy(word => word)
-                                                    .Select(g => new { Value = g.Key, Count = g.Count() });
+                     .Select(g => new {
+                         Value = g.Key,
+                         Count = g.Count()
+                     });
 
                     coalitionTables.Add(new Dictionary<string, int>());
                     foreach (var x in uniqueList)
@@ -148,7 +165,7 @@ namespace AI_Naive_Bayes_Classifier
                     }
                     y++;
                 }
-                if(i >= UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCOALITIONFILES + UserInterface.NUMOFCONSERVATIVEFILES)
+                if (i >= UserInterface.NUMOFLABOURFILES + UserInterface.NUMOFCOALITIONFILES + UserInterface.NUMOFCONSERVATIVEFILES)
                 {
                     List<List<string>> uniqueSpeech = new List<List<string>>();
                     List<string> parserList = speech[i].Distinct().ToList();

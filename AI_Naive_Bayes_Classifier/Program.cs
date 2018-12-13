@@ -9,7 +9,6 @@ namespace AI_Naive_Bayes_Classifier
         static void Main(string[] args)
         {
             Utilities utilities = new Utilities();
-
             utilities.Startup();
             Console.ReadKey();
         }
